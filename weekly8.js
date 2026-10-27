@@ -6,7 +6,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // Scene
 // ----------------------------------------------------
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x87ceeb);
+const backgroundTexture = new THREE.TextureLoader().load('./zavelstein_4k.webp');
+backgroundTexture.mapping = THREE.EquirectangularReflectionMapping;
+scene.background = backgroundTexture;
 
 // ----------------------------------------------------
 // Camera
