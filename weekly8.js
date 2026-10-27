@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 // ----------------------------------------------------
 // Scene
@@ -48,10 +49,13 @@ controls.dampingFactor = 0.05;
 // ----------------------------------------------------
 const groundGeometry = new THREE.PlaneGeometry(100, 100);
 
+const groundTexture = new RGBELoader().load('./felsenlabyrinth_1k.hdr');
 const groundMaterial = new THREE.MeshStandardMaterial({
-    color: 0x66aa66
+    color: 0xffffff,
+    map: groundTexture
 });
-
+groundTexture.repeat.set(0.25, 0.25);
+groundTexture.offset.set(0.15, 0.1);
 const ground = new THREE.Mesh(
     groundGeometry,
     groundMaterial
