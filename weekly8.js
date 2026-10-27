@@ -71,8 +71,10 @@ scene.add(ground);
 // ----------------------------------------------------
 const cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
 
+const cubeTexture = new THREE.TextureLoader().load('./eucalyptus_bark_diff_1k.jpg');
 const cubeMaterial = new THREE.MeshStandardMaterial({
-    color: 0x3366ff
+    color: 0xffffff,
+    map: cubeTexture
 });
 
 const cube = new THREE.Mesh(
