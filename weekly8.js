@@ -88,6 +88,63 @@ cube.castShadow = true;
 scene.add(cube);
 
 // ----------------------------------------------------
+// Brick Castle
+// ----------------------------------------------------
+const brickTexture = new THREE.TextureLoader().load('./stacked_brick_wall_diff_1k.jpg');
+brickTexture.wrapS = THREE.RepeatWrapping;
+brickTexture.wrapT = THREE.RepeatWrapping;
+brickTexture.repeat.set(2, 2);
+brickTexture.colorSpace = THREE.SRGBColorSpace;
+
+const brickMaterial = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: brickTexture
+});
+
+const castle = new THREE.Group();
+castle.position.set(9, 0, 0);
+scene.add(castle);
+
+function addBrickBlock(width, height, depth, x, y, z) {
+    const block = new THREE.Mesh(
+        new THREE.BoxGeometry(width, height, depth),
+        brickMaterial
+    );
+    block.position.set(x, y, z);
+    block.castShadow = true;
+    block.receiveShadow = true;
+    castle.add(block);
+}
+
+// Perimeter walls leave a central opening for the gate.
+addBrickBlock(3.8, 4.2, 0.8, -3.1, 2.1, 4);
+addBrickBlock(3.8, 4.2, 0.8, 3.1, 2.1, 4);
+addBrickBlock(10, 4.2, 0.8, 0, 2.1, -4);
+addBrickBlock(0.8, 4.2, 8, -4.6, 2.1, 0);
+addBrickBlock(0.8, 4.2, 8, 4.6, 2.1, 0);
+addBrickBlock(2.4, 1, 0.8, 0, 3.7, 4);
+
+// Corner towers and the central keep rise above the curtain walls.
+for (const x of [-4.6, 4.6]) {
+    for (const z of [-3.6, 3.6]) {
+        addBrickBlock(2.4, 7.5, 2.4, x, 3.75, z);
+    }
+}
+
+addBrickBlock(3.8, 6.5, 3.8, 0, 3.25, -0.6);
+
+// Raised merlons give the wall tops a crenellated silhouette.
+for (const x of [-3.5, -2.3, -1.1, 1.1, 2.3, 3.5]) {
+    addBrickBlock(0.8, 0.8, 0.8, x, 4.6, 4);
+    addBrickBlock(0.8, 0.8, 0.8, x, 4.6, -4);
+}
+
+for (const z of [-2.5, -1.25, 0, 1.25, 2.5]) {
+    addBrickBlock(0.8, 0.8, 0.8, -4.6, 4.6, z);
+    addBrickBlock(0.8, 0.8, 0.8, 4.6, 4.6, z);
+}
+
+// ----------------------------------------------------
 // Ambient Light
 // ----------------------------------------------------
 const ambientLight = new THREE.AmbientLight(
