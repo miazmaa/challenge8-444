@@ -1,6 +1,6 @@
 1. I did textures to fit a medieval castle setting since I thought it was the most interesting. I tried picking textures that fit the environment of a worn down setting.
 2. 
 3. I think the castle looked the best once a texture map was added.
-4. 
+4. Spread the lighting differently across the texture
 5. I think it helped by making the structures look more akin to real life objects.
 6. I would add additional features to the castle instead of just using the brick text.

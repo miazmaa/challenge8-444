@@ -96,9 +96,15 @@ brickTexture.wrapT = THREE.RepeatWrapping;
 brickTexture.repeat.set(2, 2);
 brickTexture.colorSpace = THREE.SRGBColorSpace;
 
+const barkRoughnessTexture = new THREE.TextureLoader().load('./eucalyptus_bark_diff_1k.jpg');
+barkRoughnessTexture.wrapS = THREE.RepeatWrapping;
+barkRoughnessTexture.wrapT = THREE.RepeatWrapping;
+barkRoughnessTexture.repeat.set(2, 2);
+
 const brickMaterial = new THREE.MeshStandardMaterial({
     color: 0xffffff,
-    map: brickTexture
+    map: brickTexture,
+    roughnessMap: barkRoughnessTexture
 });
 
 const castle = new THREE.Group();
