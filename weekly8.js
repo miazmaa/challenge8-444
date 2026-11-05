@@ -167,6 +167,22 @@ loader.load('./Catapult by Poly by Google - 9ahVI0EijEi.glb', function(gltf) {
     scene.add(catapult);
 });
 
+loader.load('./Medieval Girl by Vaporworks - BfExcjwlu3.glb', function(gltf) {
+    const girl = gltf.scene;
+    girl.position.set(-5, 0, 4);
+    girl.rotation.y = -Math.PI / 2;
+    girl.scale.set(0.25, 0.25, 0.25);
+    scene.add(girl);
+});
+
+loader.load('./Pilory by iPoly3D - 2aK6iL6NAY.glb', function(gltf) {
+    const pilory = gltf.scene;
+    pilory.position.set(3, 0, 8);
+    pilory.rotation.y = Math.PI / 2;
+    pilory.scale.set(2, 2, 2);
+    scene.add(pilory);
+});
+
 // ----------------------------------------------------
 // Ambient Light
 // ----------------------------------------------------
