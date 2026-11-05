@@ -153,6 +153,13 @@ for (const z of [-2.5, -1.25, 0, 1.25, 2.5]) {
 
 
 const loader = new GLTFLoader();
+loader.load('./King by Quaternius - I1gTjmuK2m.glb', function(gltf) {
+    const king = gltf.scene;
+    king.position.set(9, 0, 8);
+    king.scale.set(2, 2, 2);
+    scene.add(king);
+});
+
 loader.load('./Catapult by Poly by Google - 9ahVI0EijEi.glb', function(gltf) {
     const catapult = gltf.scene;
     catapult.position.set(40, 0, -5);
