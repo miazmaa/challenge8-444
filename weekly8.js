@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 // ----------------------------------------------------
@@ -149,6 +150,15 @@ for (const z of [-2.5, -1.25, 0, 1.25, 2.5]) {
     addBrickBlock(0.8, 0.8, 0.8, -4.6, 4.6, z);
     addBrickBlock(0.8, 0.8, 0.8, 4.6, 4.6, z);
 }
+
+
+const loader = new GLTFLoader();
+loader.load('./Catapult by Poly by Google - 9ahVI0EijEi.glb', function(gltf) {
+    const catapult = gltf.scene;
+    catapult.position.set(40, 0, -5);
+    catapult.scale.set(0.5, 0.5, 0.5);
+    scene.add(catapult);
+});
 
 // ----------------------------------------------------
 // Ambient Light
