@@ -166,6 +166,8 @@ loader.load('./Catapult by Poly by Google - 9ahVI0EijEi.glb', function(gltf) {
     catapult.scale.set(0.5, 0.5, 0.5);
     scene.add(catapult);
 });
+let girl;
+let pilory;
 
 loader.load('./Medieval Girl by Vaporworks - BfExcjwlu3.glb', function(gltf) {
     const girl = gltf.scene;
@@ -182,6 +184,11 @@ loader.load('./Pilory by iPoly3D - 2aK6iL6NAY.glb', function(gltf) {
     pilory.scale.set(2, 2, 2);
     scene.add(pilory);
 });
+
+const playerBox =
+    new THREE.Box3();
+const piloryBox =
+    new THREE.Box3();
 
 // ----------------------------------------------------
 // Ambient Light
@@ -245,6 +252,15 @@ function animate() {
     requestAnimationFrame(animate);
 
     cube.rotation.y += 0.01;
+
+    if (girl && pilory) {
+        playerBox.setFromObject(girl);
+        piloryBox.setFromObject(pilory);
+
+        if (playerBox.intersectsBox(piloryBox)) {
+            console.log("Collision!");
+        }
+    }
 
     controls.update();
 
