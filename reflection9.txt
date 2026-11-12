@@ -1,0 +1,5 @@
+1. The decorative catapult model was the easiest since it involved the least additional code besides adding it to the scene.
+2. The hardest part was incorporating animations for the walking and king models.
+3. It makes it feel more realistic since people can't walk through objects.
+4. I would add more collision detection besides the two models required.
+5. The decorative model cannot interact with other objects, but the interactive model can.
