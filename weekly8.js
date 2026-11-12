@@ -153,11 +153,26 @@ for (const z of [-2.5, -1.25, 0, 1.25, 2.5]) {
 
 
 const loader = new GLTFLoader();
+let kingMixer;
+let player;
+let playerMixer;
+let idleAction;
+let walkAction;
+let playerIsWalking = false;
+const keys = {};
+
 loader.load('./King by Quaternius - I1gTjmuK2m.glb', function(gltf) {
     const king = gltf.scene;
     king.position.set(9, 0, 8);
     king.scale.set(2, 2, 2);
     scene.add(king);
+
+    kingMixer = new THREE.AnimationMixer(king);
+    const deathClip = THREE.AnimationClip.findByName(gltf.animations, 'CharacterArmature|Death');
+    const deathAction = kingMixer.clipAction(deathClip);
+    deathAction.setLoop(THREE.LoopOnce, 1);
+    deathAction.clampWhenFinished = true;
+    deathAction.play();
 });
 
 loader.load('./Catapult by Poly by Google - 9ahVI0EijEi.glb', function(gltf) {
@@ -166,19 +181,23 @@ loader.load('./Catapult by Poly by Google - 9ahVI0EijEi.glb', function(gltf) {
     catapult.scale.set(0.5, 0.5, 0.5);
     scene.add(catapult);
 });
-let girl;
 let pilory;
 
-loader.load('./Medieval Girl by Vaporworks - BfExcjwlu3.glb', function(gltf) {
-    const girl = gltf.scene;
-    girl.position.set(-5, 0, 4);
-    girl.rotation.y = -Math.PI / 2;
-    girl.scale.set(0.25, 0.25, 0.25);
-    scene.add(girl);
+loader.load('./Animated Human by Quaternius - c3Ibh9I3udk.glb', function(gltf) {
+    player = gltf.scene;
+    player.position.set(-5, 0, 4);
+    scene.add(player);
+
+    playerMixer = new THREE.AnimationMixer(player);
+    const idleClip = THREE.AnimationClip.findByName(gltf.animations, 'Human Armature|Idle');
+    const walkClip = THREE.AnimationClip.findByName(gltf.animations, 'Human Armature|Walk');
+    idleAction = playerMixer.clipAction(idleClip);
+    walkAction = playerMixer.clipAction(walkClip);
+    idleAction.play();
 });
 
 loader.load('./Pilory by iPoly3D - 2aK6iL6NAY.glb', function(gltf) {
-    const pilory = gltf.scene;
+    pilory = gltf.scene;
     pilory.position.set(3, 0, 8);
     pilory.rotation.y = Math.PI / 2;
     pilory.scale.set(2, 2, 2);
@@ -212,6 +231,14 @@ directionalLight.position.set(20, 30, 10);
 directionalLight.castShadow = true;
 
 scene.add(directionalLight);
+
+window.addEventListener('keydown', (event) => {
+keys[event.key] = true;
+});
+
+window.addEventListener('keyup', (event) => {
+keys[event.key] = false;
+});
 
 // ----------------------------------------------------
 // Toggle Lights
@@ -247,14 +274,40 @@ window.addEventListener("resize", () => {
 // ----------------------------------------------------
 // Animation Loop
 // ----------------------------------------------------
+const clock = new THREE.Clock();
+
 function animate() {
 
     requestAnimationFrame(animate);
 
+    const delta = clock.getDelta();
+    kingMixer?.update(delta);
+    playerMixer?.update(delta);
+
     cube.rotation.y += 0.01;
 
-    if (girl && pilory) {
-        playerBox.setFromObject(girl);
+    if (player) {
+        if (keys.ArrowUp) player.position.z -= 0.1;
+        if (keys.ArrowDown) player.position.z += 0.1;
+        if (keys.ArrowLeft) player.position.x -= 0.1;
+        if (keys.ArrowRight) player.position.x += 0.1;
+
+        const isWalking = keys.ArrowUp || keys.ArrowDown || keys.ArrowLeft || keys.ArrowRight;
+
+        if (isWalking !== playerIsWalking) {
+            if (isWalking) {
+                idleAction.fadeOut(0.2);
+                walkAction.reset().fadeIn(0.2).play();
+            } else {
+                walkAction.fadeOut(0.2);
+                idleAction.reset().fadeIn(0.2).play();
+            }
+            playerIsWalking = isWalking;
+        }
+    }
+
+    if (player && pilory) {
+        playerBox.setFromObject(player);
         piloryBox.setFromObject(pilory);
 
         if (playerBox.intersectsBox(piloryBox)) {
